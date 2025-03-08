@@ -2,11 +2,11 @@ name: Laravel CI/CD
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - develop
   pull_request:
-    branches: 
+    branches:
       - main
       - develop
 
@@ -15,6 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Send Email Notification
+        if: ${{ always() }}
+        uses: dawidd6/action-send_mail@v3
+        with:
+          server_address: smtp.google.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Workflow ${{ github.workflow }} ${{ job.status }}
+          body: |
+            The workflow run for ${{ github.repository }} has ${{ job.status }}.
+            Commit: ${{ github.sha }}
+            Branch: ${{ github.ref }}
+            Repository: ${{ github.repository }}
+          to: bjorntelkamp2000@gmail.com
+          from: bjorntelkamp2000@gmail.com
+
       # Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
