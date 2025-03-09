@@ -21,7 +21,7 @@ it('displays the Test component with correct props for a logged-in user', functi
         ->assertStatus(200)
         ->assertInertia(function (Assert $page) {
             $page
-                ->component('test');
+                ->component('test2');
         });
 });
 
