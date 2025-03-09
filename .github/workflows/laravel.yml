@@ -187,7 +187,7 @@ jobs:
                           ${{ github.repository }}
                       </div>
                       <div class="content">
-                          <div class="status" style="color: ${{ job.status == 'success' && '#2da44e' || '#cf222e' }};">
+                          <div class="status" >
                               <span class="icon" style="background-color: ${{ job.status == 'success' && '#2da44e' || '#cf222e' }};">
                                   ${{ job.status == 'success' && '<img src="https://raw.githubusercontent.com/BjornTelkamp/laravel_project/refs/heads/main/public/images/icons/checkmark.png" alt="checkmark" />' || '<img src="https://raw.githubusercontent.com/BjornTelkamp/laravel_project/refs/heads/main/public/images/icons/xmark.png" alt="xmark" />' }}
                               </span>
