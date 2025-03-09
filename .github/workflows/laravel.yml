@@ -86,22 +86,43 @@ jobs:
 
       - name: Send Email Notification
         if: always()
-        uses: dawidd6/action-send-mail@v4
+        uses: hilarion5/send-mail@v1
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{secrets.EMAIL_USERNAME}}
-          password: ${{secrets.EMAIL_PASSWORD}}
+          smtp-server: smtp.gmail.com
+          smtp-port: 465
+          smtp-secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          to-email: bjorntelkamp2000@gmail.com
+          from-email: bjorntelkamp2000@gmail.com
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
-          to: bjorntelkamp2000@gmail.com
-          from: bjorntelkamp2000@gmail.com
-          body: |
-            The workflow run for ${{ github.repository }} has ${{ job.status }}.
-            Commit: ${{ github.sha }}
-            Branch: ${{ github.ref }}
-            Repository: ${{ github.repository }}
-            Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          body: test
+          html: |
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+                .circle { display: inline-block; width: 30px; height: 30px; border-radius: 50%; text-align: center; line-height: 30px; color: white; font-size: 18px; margin-right: 10px; }
+                .success .circle { background-color: #28a745; }
+                .failure .circle { background-color: #dc3545; }
+                .branch { background-color: #e0e0e0; padding: 4px 8px; font-weight: bold; display: inline-block; }
+                .details { margin-top: 10px; line-height: 1.6; }
+                a { color: #007bff; text-decoration: none; }
+              </style>
+            </head>
+            <body>
+              ${{ job.status == 'success' && '<div class="header success"><span class="circle">✔</span> Success</div>' || '<div class="header failure"><span class="circle">✘</span> Failed</div>' }}
+              <div class="details">
+                The workflow run for <strong>${{ github.repository }}</strong> has completed.<br>
+                <strong>Branch:</strong> <span class="branch">${{ github.ref }}</span><br>
+                <strong>Commit:</strong> ${{ github.sha }}<br>
+                <strong>Repository:</strong> ${{ github.repository }}<br>
+                <strong>Run URL:</strong> <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">{{{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}</a>
+              </div>
+            </body>
+            </html>
         continue-on-error: true
 
       - name: Upload test logs
