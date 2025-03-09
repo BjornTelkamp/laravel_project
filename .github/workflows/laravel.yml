@@ -84,30 +84,18 @@ jobs:
           DB_DATABASE: database/database.sqlite
         run: php artisan test
 
-      - name: Debug Secrets
-        if: always()
-        run: |
-          echo "EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}"
-          echo "EMAIL_PASSWORD set: ${{ secrets.EMAIL_PASSWORD != '' }}"
-          echo "Username length: ${#EMAIL_USERNAME}"
-          echo "Password length: ${#EMAIL_PASSWORD}"
-        env:
-          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        continue-on-error: true
-
       - name: Send Email Notification
         if: always()
-        uses: hilarion5/send-mail@v1
+        uses: dawidd6/action-send-mail@v4
         with:
-          smtp-server: smtp.gmail.com
-          smtp-port: 465
-          smtp-secure: true
-          from-email: bjorntelkamp2000@gmail.com
-          to-email: bjorntelkamp2000@gmail.com
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
           username: ${{secrets.EMAIL_USERNAME}}
           password: ${{secrets.EMAIL_PASSWORD}}
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
+          to: bjorntelkamp2000@gmail.com
+          from: bjorntelkamp2000@gmail.com
           body: |
             The workflow run for ${{ github.repository }} has ${{ job.status }}.
             Commit: ${{ github.sha }}
