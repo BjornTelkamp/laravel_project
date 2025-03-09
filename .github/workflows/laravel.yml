@@ -84,6 +84,18 @@ jobs:
           DB_DATABASE: database/database.sqlite
         run: php artisan test
 
+      - name: Debug Secrets
+        if: always()
+        run: |
+          echo "EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}"
+          echo "EMAIL_PASSWORD set: ${{ secrets.EMAIL_PASSWORD != '' }}"
+          echo "Username length: ${#EMAIL_USERNAME}"
+          echo "Password length: ${#EMAIL_PASSWORD}"
+        env:
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        continue-on-error: true
+
       - name: Send Email Notification
         if: always()
         uses: hilarion5/send-mail@v1
