@@ -102,8 +102,6 @@ jobs:
             Branch: ${{ github.ref }}
             Repository: ${{ github.repository }}
             Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          connection_timeout: 30
-          debug: true
         continue-on-error: true
 
       - name: Upload test logs
