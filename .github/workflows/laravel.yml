@@ -107,7 +107,6 @@ jobs:
                         margin: 0;
                         padding: 0;
                         background-color: #000000;
-                        color: #f5f5f5 !important;
                     }
 
                     .container {
@@ -116,12 +115,14 @@ jobs:
                         background-color: #1a1a1a;
                         border-radius: 8px;
                         padding: 20px;
+                        color: #f5f5f5;
                     }
 
                     .header {
                         text-align: center;
                         padding-bottom: 20px;
                         border-bottom: 1px solid #333333;
+                        color: #f5f5f5;
                     }
 
                     .header img {
@@ -131,6 +132,7 @@ jobs:
 
                     .content {
                         padding: 20px;
+                        color: #f5f5f5;
                     }
 
                     .status {
@@ -138,41 +140,46 @@ jobs:
                         font-weight: bold;
                         text-align: center;
                         margin-bottom: 20px;
+                        color: ${{ job.status == 'success' && '#2da44e' || '#cf222e' }
                     }
 
-                    .success {
-                        color: #2da44e;
+                    ;
                     }
-
-                    .failure {
-                        color: #cf222e;
-                    }
-
                     .icon {
                         display: inline-block;
                         vertical-align: middle;
                         margin-right: 10px;
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background-color: ${{ job.status == 'success' && '#2da44e' || '#cf222e' }
                     }
 
-                    .details, .steps, .errors {
+                    ;
+                    text-align: center
+
+                    ;
+                    line-height:
+
+                    28
+                    px
+
+                    ;
+                    }
+                    .icon img {
+                        width: 16px;
+                        height: 16px;
+                        vertical-align: middle;
+                    }
+
+                    .details {
                         margin: 20px 0;
+                        color: #f5f5f5;
                     }
 
-                    .details p, .steps p, .errors p {
+                    .details p {
                         margin: 10px 0;
-                    }
-
-                    .steps ul, .errors ul {
-                        list-style-type: none;
-                        padding-left: 0;
-                    }
-
-                    .steps li {
-                        margin: 5px 0;
-                    }
-
-                    .errors {
-                        color: #ff9999;
+                        color: #f5f5f5;
                     }
 
                     .button-container {
@@ -205,16 +212,14 @@ jobs:
                     ${{ github.repository }}
                 </div>
                 <div class="content">
-                    <div class="status ${{ job.status == 'success' && 'success' || 'failure' }}">
-                                 <span class="icon">
-                                   ${{ job.status == 'success' && '<svg width="28" height="28" viewBox="0 0 16 16"
-                                                                        style="fill: #2da44e;"><circle cx="8" cy="8" r="8" /><path
-                                     d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm3.78-9.72a.751.751 0 0 0-.018-1.042.751.751 0 0 0-1.042-.018L6.75 9.19 5.28 7.72a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042l2 2a.75.75 0 0 0 1.06 0Z"
-                                     fill="#ffffff" /></svg>' || '<svg width="28" height="28" viewBox="0 0 16 16"
-                                                                       style="fill: #cf222e;"><circle cx="8" cy="8" r="8" /><path
-                                     d="M2.343 13.657A8 8 0 1 1 13.658 2.343 8 8 0 0 1 2.343 13.657ZM6.03 4.97a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042L6.94 8 4.97 9.97a.749.749 0 0 0 .326 1.275.749.749 0 0 0 .734-.215L8 9.06l1.97 1.97a.749.749 0 0 0 1.275-.326.749.749 0 0 0-.215-.734L9.06 8l1.97-1.97a.749.749 0 0 0-.326-1.275.749.749 0 0 0-.734.215L8 6.94Z"
-                                     fill="#ffffff" /></svg>' }}
-                                 </span>
+                    <div class="status">
+                                        <span class="icon">
+                                            ${{ job.status == 'success' && '<img
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAFFJREFUOE9jZKAQMILEmZmZ/zIwMjAw/2NgZJjDMB+EsQEToyQDy78nMDIwMhMhJCNsR0RERAwMjIxExA0MjAyMDEQMDIyMhM8QJCNsR0QkAAYA5poMNaC/H/YAAAAASUVORK5CYII="
+                                            alt="Checkmark">' || '<img
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAGlJREFUOE9jZKAQMOG/gYGB4T8DA8P/GZhA8T8GEgYGBob/DIyMDEQMDIyM/5mRkZGZgYGBkYHhPwMjIyMRAwMjI/8zMDIyEjEwMDIy/2dgZGRiYGBgZGD4z8DIyEjEwMDIyP8MjIyMRAwA2poMNe8Q5bsAAAAASUVORK5CYII="
+                                            alt="X">' }}
+                                        </span>
                         ${{ job.status == 'success' && 'Success' || 'Failed' }}
                     </div>
                     <div class="details">
@@ -223,36 +228,6 @@ jobs:
                         <p><strong>Commit:</strong> ${{ github.sha }}</p>
                         <p><strong>Repository:</strong> ${{ github.repository }}</p>
                     </div>
-                    <div class="steps">
-                        <p><strong>Steps Executed:</strong></p>
-                        <ul>
-                            <li ${{ steps.checkout.outcome==
-                            'success' && '' || 'style="color: #ff9999"' }}>${{ steps.checkout.name }} - ${{ steps.checkout.outcome
-                            }}</li>
-                            <li ${{ steps.setup-php.outcome==
-                            'success' && '' || 'style="color: #ff9999"' }}>${{ steps.setup-php.name }} - ${{ steps.setup-php.outcome
-                            }}</li>
-                            <li ${{ steps.composer-install.outcome==
-                            'success' && '' || 'style="color: #ff9999"' }}>${{ steps.composer-install.name }} - ${{
-                            steps.composer-install.outcome }}</li>
-                            <li ${{ steps.pint.outcome==
-                            'success' && '' || 'style="color: #ff9999"' }}>${{ steps.pint.name }} - ${{ steps.pint.outcome }}</li>
-                            <li ${{ steps.tests.outcome==
-                            'success' && '' || 'style="color: #ff9999"' }}>${{ steps.tests.name }} - ${{ steps.tests.outcome }}</li>
-                        </ul>
-                    </div>
-                    ${{ job.status == 'failure' && '
-                    <div class="errors">
-                        <p><strong>Errors:</strong></p>
-                        <ul>
-                            <li>Workflow failed. See run logs at <a
-                                href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                                style="color: #66b3ff;">${{ github.server_url }}/${{ github.repository }}/actions/runs/${{
-                                github.run_id }}</a> for details.
-                            </li>
-                        </ul>
-                    </div>
-                    ' || '' }}
                     <div class="button-container">
                         <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
                            class="button">View Run Details</a>
