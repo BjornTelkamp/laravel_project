@@ -96,7 +96,7 @@ jobs:
           to-email: bjorntelkamp2000@gmail.com
           from-email: bjorntelkamp2000@gmail.com
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
-          body: |
+          html: |
             <!DOCTYPE html>
             <html>
             <head>
