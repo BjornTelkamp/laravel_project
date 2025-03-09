@@ -88,11 +88,7 @@ jobs:
         if: always()
         uses: dawidd6/action-send-mail@v4
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{secrets.EMAIL_USERNAME}}
-          password: ${{secrets.EMAIL_PASSWORD}}
+          connection_url: ${{ secrets.MAIL_CONNECTION }}
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
           to: bjorntelkamp2000@gmail.com
           from: bjorntelkamp2000@gmail.com
@@ -102,6 +98,8 @@ jobs:
             Branch: ${{ github.ref }}
             Repository: ${{ github.repository }}
             Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          nodemailerlog: true
+          nodemailerdebug: true
         continue-on-error: true
 
       - name: Upload test logs
