@@ -15,31 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send Email Notification
-        if: ${{ always() }}
-        uses: dawidd6/action-send-mail@v4
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Workflow ${{ github.workflow }} ${{ job.status }}
-          body: |
-            The workflow run for ${{ github.repository }} has ${{ job.status }}.
-            Commit: ${{ github.sha }}
-            Branch: ${{ github.ref }}
-            Repository: ${{ github.repository }}
-          to: bjorntelkamp2000@gmail.com
-          from: bjorntelkamp2000@gmail.com
-
-      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1  # Shallow clone for speed
+          fetch-depth: 1
 
-      # Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -47,7 +27,6 @@ jobs:
           extensions: mbstring, pdo_mysql, sqlite3, xml, bcmath
           tools: composer
 
-      # Cache Composer dependencies
       - name: Cache Composer dependencies
         uses: actions/cache@v3
         with:
@@ -55,17 +34,14 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      # Install Composer dependencies
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Cache npm dependencies
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -73,55 +49,67 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-npm-
 
-      # Install npm dependencies
       - name: Install npm dependencies
         run: npm install
 
-      # Build frontend assets
       - name: Build frontend assets
         run: npm run build
 
-      # Copy .env file
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      # Generate Laravel app key
       - name: Generate key
         run: php artisan key:generate
 
-      # Set directory permissions
       - name: Directory Permissions
         run: chmod -R 775 storage bootstrap/cache
 
-      # Run Laravel Pint
       - name: Run Laravel Pint
-        run: ./vendor/bin/pint --test || true  # Continue even if Pint fails (optional)
+        run: ./vendor/bin/pint --test || true
 
-      # Setup SQLite database
       - name: Create Database
         run: |
           mkdir -p database
           touch database/database.sqlite
 
-      # Run migrations
       - name: Run migrations
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: php artisan migrate --env=testing
 
-      # Execute tests
       - name: Execute tests via PHPUnit/Pest
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: php artisan test
 
-      # Upload test logs on failure (fixed version)
+      - name: Send Email Notification
+        if: always()
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Workflow ${{ github.workflow }} - ${{ job.status }}
+          to: bjorntelkamp2000@gmail.com
+          from: bjorntelkamp2000@gmail.com
+          body: |
+            The workflow run for ${{ github.repository }} has ${{ job.status }}.
+            Commit: ${{ github.sha }}
+            Branch: ${{ github.ref }}
+            Repository: ${{ github.repository }}
+            Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          connection_timeout: 30
+          debug: true
+        continue-on-error: true
+
       - name: Upload test logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: laravel-logs
           path: storage/logs/*.log
-        continue-on-error: true  # Fallback if action fails
+        continue-on-error: true
