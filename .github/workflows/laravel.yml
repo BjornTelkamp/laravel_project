@@ -117,33 +117,40 @@ jobs:
                               border-radius: 8px;
                               padding: 20px;
                               color: #424C57;
+                              background-color: #FFFFFF;
                               border: 1px solid lightgray;
                           }
                           .header {
                               text-align: center;
                               padding-bottom: 20px;
                               border-bottom: 1px solid #cccccc;
+                              background-color: #FFFFFF;
                               color: #424C57;
                           }
                           .header img {
                               max-width: 150px;
+                              background-color: #FFFFFF;
                               height: auto;
                           }
                           .content {
                               padding: 20px;
+                              background-color: #FFFFFF;
                               color: #424C57;
                           }
                           .details {
                               margin: 20px 0;
+                              background-color: #FFFFFF;
                               color: #424C57;
                           }
                           .details p {
                               margin: 10px 0;
+                              background-color: #FFFFFF;
                               color: #424C57;
                           }
                           .button-container {
                               text-align: center;
                               margin: 20px 0;
+                              background-color: #FFFFFF;
                           }
                           .button {
                               display: inline-block;
@@ -160,6 +167,7 @@ jobs:
                               font-size: 12px;
                               color: #666666;
                               border-top: 1px solid #cccccc;
+                              background-color: #FFFFFF;
                           }
                       </style>
                   </head>
