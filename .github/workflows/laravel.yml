@@ -86,16 +86,16 @@ jobs:
 
       - name: Send Email Notification
         if: always()
-        uses: dawidd6/action-send-mail@v4
+        uses: hilarion5/send-mail@v1
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
+          smtp-server: smtp.gmail.com
+          smtp-port: 465
+          smtp-secure: true
+          from-email: bjorntelkamp2000@gmail.com
+          to-email: bjorntelkamp2000@gmail.com
           username: ${{secrets.EMAIL_USERNAME}}
           password: ${{secrets.EMAIL_PASSWORD}}
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
-          to: bjorntelkamp2000@gmail.com
-          from: bjorntelkamp2000@gmail.com
           body: |
             The workflow run for ${{ github.repository }} has ${{ job.status }}.
             Commit: ${{ github.sha }}
