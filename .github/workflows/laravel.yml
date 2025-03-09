@@ -132,10 +132,12 @@ jobs:
                           .content {
                               padding: 20px;
                               color: #424C57;
+                              background-color: #FFFFFF;
                           }
                           .details {
                               margin: 20px 0;
                               color: #424C57;
+                              background-color: #FFFFFF;
                           }
                           .details p {
                               margin: 10px 0;
@@ -160,6 +162,7 @@ jobs:
                               font-size: 12px;
                               color: #666666;
                               border-top: 1px solid #cccccc;
+                              background-color: #FFFFFF;
                           }
                       </style>
                   </head>
