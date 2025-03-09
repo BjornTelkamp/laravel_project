@@ -88,7 +88,10 @@ jobs:
         if: always()
         uses: dawidd6/action-send-mail@v4
         with:
-          connection_url: ${{ secrets.MAIL_CONNECTION }}
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{secrets.EMAIL_USERNAME}}
+          password: ${{secrets.EMAIL_PASSWORD}}
           subject: Workflow ${{ github.workflow }} - ${{ job.status }}
           to: bjorntelkamp2000@gmail.com
           from: bjorntelkamp2000@gmail.com
